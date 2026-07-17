@@ -1,0 +1,14 @@
+{
+  "role": "importateur",
+  "description": "Credentials are loaded from environment variables. This file documents role ownership.",
+  "envKeys": {
+    "preferred": {
+      "username": "E2E_IMPORTATEUR_USERNAME",
+      "password": "E2E_IMPORTATEUR_PASSWORD"
+    },
+    "fallback": {
+      "username": "E2E_USERNAME",
+      "password": "E2E_PASSWORD"
+    }
+  }
+}

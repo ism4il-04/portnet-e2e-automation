@@ -1,0 +1,19 @@
+{
+  "nature": "initiale",
+  "modelDescription": {
+    "otherDesignation": "test",
+    "fabricant": "Test",
+    "marque": "Test Marque",
+    "modele": "Test Modèle",
+    "usageDescription": "desc"
+  },
+  "documents": {
+    "mandatFile": "2.9.pdf",
+    "noteDescriptiveFile": "note_descriptive.docx",
+    "drawingsFile": "2.9.pdf",
+    "userDocsFile": "2.9.pdf",
+    "testReportsFile": "2.9.pdf",
+    "oimlCertificateFile": "2.9.pdf",
+    "approvalRequestFile": "2.9.pdf"
+  }
+}

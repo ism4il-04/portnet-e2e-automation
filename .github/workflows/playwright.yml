@@ -1,0 +1,74 @@
+name: Playwright CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+    inputs:
+      run_internal_e2e:
+        description: Run internal E2E tests on self-hosted runner
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  quality:
+    name: Quality Checks (Public Safe)
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Validate Playwright discovery
+        run: npx playwright test --list
+
+  internal-e2e:
+    name: Internal E2E (Self-Hosted)
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_internal_e2e == true }}
+    timeout-minutes: 90
+    runs-on: self-hosted
+    env:
+      LOGIN_URL: ${{ secrets.LOGIN_URL }}
+      HOME_URL: ${{ secrets.HOME_URL }}
+      E2E_IMPORTATEUR_USERNAME: ${{ secrets.E2E_IMPORTATEUR_USERNAME }}
+      E2E_IMPORTATEUR_PASSWORD: ${{ secrets.E2E_IMPORTATEUR_PASSWORD }}
+      INTERNAL_HOSTS_ENTRY: ${{ secrets.INTERNAL_HOSTS_ENTRY }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Optional hosts mapping (Linux self-hosted)
+        if: ${{ runner.os == 'Linux' && env.INTERNAL_HOSTS_ENTRY != '' }}
+        run: |
+          echo "$INTERNAL_HOSTS_ENTRY" | sudo tee -a /etc/hosts
+
+      - name: Run importateur E2E tests
+        run: npx playwright test tests/importateur
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30

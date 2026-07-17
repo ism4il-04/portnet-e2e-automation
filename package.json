@@ -1,0 +1,24 @@
+{
+  "name": "portnet-s.a.---gi2",
+  "version": "1.0.0",
+  "description": "Production-ready Playwright QA automation framework using TypeScript and the Page Object Model.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "ui": "playwright test --ui",
+    "headed": "playwright test --headed",
+    "debug": "playwright test --debug",
+    "report": "playwright show-report",
+    "codegen": "playwright codegen"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.61.1",
+    "@types/node": "^24.0.0",
+    "dotenv": "^17.2.1",
+    "typescript": "^5.9.2"
+  }
+}
