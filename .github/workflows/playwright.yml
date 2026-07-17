@@ -19,9 +19,9 @@ jobs:
     timeout-minutes: 20
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: lts/*
 
@@ -46,9 +46,9 @@ jobs:
       E2E_IMPORTATEUR_PASSWORD: ${{ secrets.E2E_IMPORTATEUR_PASSWORD }}
       INTERNAL_HOSTS_ENTRY: ${{ secrets.INTERNAL_HOSTS_ENTRY }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: lts/*
 
@@ -63,8 +63,29 @@ jobs:
         run: |
           echo "$INTERNAL_HOSTS_ENTRY" | sudo tee -a /etc/hosts
 
+      - name: Preflight internal access check
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -z "${LOGIN_URL:-}" ] || [ -z "${HOME_URL:-}" ]; then
+            echo "LOGIN_URL and HOME_URL must be set in repository secrets."
+            exit 1
+          fi
+
+          echo "Checking access to LOGIN_URL..."
+          curl -sS -L --max-time 30 "$LOGIN_URL" -o preflight_login.html
+
+          if grep -Eiq "web page blocked|attack id|cannot be displayed" preflight_login.html; then
+            echo "Access appears blocked by WAF/security gateway from this runner network/IP."
+            echo "Runner outbound IP must be allowlisted for the target environment."
+            exit 1
+          fi
+
+          echo "Preflight OK: login page reachable and not blocked."
+
       - name: Run importateur E2E tests
-        run: npx playwright test tests/importateur
+        run: npx playwright test tests/importateur --retries=0
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
