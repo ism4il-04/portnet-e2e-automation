@@ -18,12 +18,15 @@ jobs:
     name: Quality Checks (Public Safe)
     timeout-minutes: 20
     runs-on: ubuntu-latest
+    env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
     steps:
       - uses: actions/checkout@v5
 
       - uses: actions/setup-node@v5
         with:
           node-version: lts/*
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
@@ -40,6 +43,7 @@ jobs:
     timeout-minutes: 90
     runs-on: self-hosted
     env:
+      PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: '1'
       LOGIN_URL: ${{ secrets.LOGIN_URL }}
       HOME_URL: ${{ secrets.HOME_URL }}
       E2E_IMPORTATEUR_USERNAME: ${{ secrets.E2E_IMPORTATEUR_USERNAME }}
@@ -51,6 +55,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: lts/*
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
