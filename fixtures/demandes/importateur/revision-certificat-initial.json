@@ -1,6 +1,21 @@
 {
   "nature": "revision",
   "variant": "certificat-initial",
-  "status": "planned",
-  "notes": "Use N° de certificat initial"
+  "modelDescription": {
+    "otherDesignation": "Chronotachygraphe revision initiale",
+    "fabricant": "Fabricant Revision A",
+    "marque": "Marque Revision A",
+    "modele": "Modele Revision A",
+    "usageDescription": "Mise a jour technique du modele pour revision",
+    "certificateRowName": "MA.2.801.26 13/07/2026 23:50"
+  },
+  "documents": {
+    "mandatFile": "2.9.pdf",
+    "noteDescriptiveFile": "note_descriptive.docx",
+    "drawingsFile": "2.9.pdf",
+    "userDocsFile": "2.9.pdf",
+    "testReportsFile": "2.9.pdf",
+    "oimlCertificateFile": "2.9.pdf",
+    "approvalRequestFile": "2.9.pdf"
+  }
 }

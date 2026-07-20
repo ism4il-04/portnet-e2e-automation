@@ -1,6 +1,21 @@
 {
   "nature": "renouvellement",
   "variant": "autre-certificat",
-  "status": "planned",
-  "notes": "Use autre N° de certificat"
+  "modelDescription": {
+    "otherDesignation": "Chronotachygraphe renouvellement libre",
+    "fabricant": "Fabricant Renouvellement B",
+    "marque": "Marque Renouvellement B",
+    "modele": "Modele Renouvellement B",
+    "usageDescription": "Renouvellement avec saisie manuelle du certificat",
+    "otherCertificateNumber": "123"
+  },
+  "documents": {
+    "mandatFile": "2.9.pdf",
+    "noteDescriptiveFile": "note_descriptive.docx",
+    "drawingsFile": "2.9.pdf",
+    "userDocsFile": "2.9.pdf",
+    "testReportsFile": "2.9.pdf",
+    "oimlCertificateFile": "2.9.pdf",
+    "approvalRequestFile": "2.9.pdf"
+  }
 }

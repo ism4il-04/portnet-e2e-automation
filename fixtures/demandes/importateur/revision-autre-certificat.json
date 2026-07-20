@@ -1,6 +1,21 @@
 {
   "nature": "revision",
   "variant": "autre-certificat",
-  "status": "planned",
-  "notes": "Use autre N° de certificat"
+  "modelDescription": {
+    "otherDesignation": "Chronotachygraphe revision libre",
+    "fabricant": "Fabricant Revision B",
+    "marque": "Marque Revision B",
+    "modele": "Modele Revision B",
+    "usageDescription": "Revision avec saisie manuelle du certificat",
+    "otherCertificateNumber": "123"
+  },
+  "documents": {
+    "mandatFile": "2.9.pdf",
+    "noteDescriptiveFile": "note_descriptive.docx",
+    "drawingsFile": "2.9.pdf",
+    "userDocsFile": "2.9.pdf",
+    "testReportsFile": "2.9.pdf",
+    "oimlCertificateFile": "2.9.pdf",
+    "approvalRequestFile": "2.9.pdf"
+  }
 }

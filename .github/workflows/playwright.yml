@@ -55,8 +55,13 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Playwright browsers
+      - name: Install Playwright browsers (Linux)
+        if: ${{ runner.os == 'Linux' }}
         run: npx playwright install --with-deps
+
+      - name: Install Playwright browsers (Non-Linux)
+        if: ${{ runner.os != 'Linux' }}
+        run: npx playwright install
 
       - name: Optional hosts mapping (Linux self-hosted)
         if: ${{ runner.os == 'Linux' && env.INTERNAL_HOSTS_ENTRY != '' }}
@@ -64,25 +69,23 @@ jobs:
           echo "$INTERNAL_HOSTS_ENTRY" | sudo tee -a /etc/hosts
 
       - name: Preflight internal access check
-        shell: bash
+        shell: pwsh
         run: |
-          set -euo pipefail
+          $ErrorActionPreference = 'Stop'
 
-          if [ -z "${LOGIN_URL:-}" ] || [ -z "${HOME_URL:-}" ]; then
-            echo "LOGIN_URL and HOME_URL must be set in repository secrets."
-            exit 1
-          fi
+          if ([string]::IsNullOrWhiteSpace($env:LOGIN_URL) -or [string]::IsNullOrWhiteSpace($env:HOME_URL)) {
+            Write-Error 'LOGIN_URL and HOME_URL must be set in repository secrets.'
+          }
 
-          echo "Checking access to LOGIN_URL..."
-          curl -sS -L --max-time 30 "$LOGIN_URL" -o preflight_login.html
+          Write-Host 'Checking access to LOGIN_URL...'
+          $response = Invoke-WebRequest -Uri $env:LOGIN_URL -MaximumRedirection 5 -TimeoutSec 30
+          $content = $response.Content
 
-          if grep -Eiq "web page blocked|attack id|cannot be displayed" preflight_login.html; then
-            echo "Access appears blocked by WAF/security gateway from this runner network/IP."
-            echo "Runner outbound IP must be allowlisted for the target environment."
-            exit 1
-          fi
+          if ($content -match '(?i)web page blocked|attack id|cannot be displayed') {
+            Write-Error 'Access appears blocked by WAF/security gateway from this runner network/IP. Runner outbound IP must be allowlisted for the target environment.'
+          }
 
-          echo "Preflight OK: login page reachable and not blocked."
+          Write-Host 'Preflight OK: login page reachable and not blocked.'
 
       - name: Run importateur E2E tests
         run: npx playwright test tests/importateur --retries=0

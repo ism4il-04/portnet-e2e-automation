@@ -1,35 +1,35 @@
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { test } from '@playwright/test';
-import type { RenouvellementWithInitialCertificateData, RequiredDocuments } from '../../../../pages/DemandeApprobationPage.js';
+import type { ModelDescriptionData, RequiredDocuments } from '../../../../pages/DemandeApprobationPage.js';
 import { DemandeApprobationPage } from '../../../../pages/DemandeApprobationPage.js';
 import { LoginPage } from '../../../../pages/LoginPage.js';
 import { getRoleCredentials, hasRequiredCredentials, hasRequiredEnvironment } from '../../../../utils/helpers.js';
 
-type RenouvellementInitialFixture = {
-  modelDescription: RenouvellementWithInitialCertificateData;
+type InitialeFixture = {
+  modelDescription: ModelDescriptionData;
   documents: Record<keyof RequiredDocuments, string>;
 };
 
-async function loadRenouvellementInitialFixture(): Promise<RenouvellementInitialFixture> {
-  const fixturePath = fileURLToPath(new URL('../../../../fixtures/demandes/importateur/renouvellement-certificat-initial.json', import.meta.url));
+async function loadInitialeFixture(): Promise<InitialeFixture> {
+  const fixturePath = fileURLToPath(new URL('../../../../fixtures/demandes/importateur/initiale-002.json', import.meta.url));
   const payload = await readFile(fixturePath, 'utf-8');
-  return JSON.parse(payload) as RenouvellementInitialFixture;
+  return JSON.parse(payload) as InitialeFixture;
 }
 
 function resolveDocumentPath(fileName: string): string {
   return fileURLToPath(new URL(`../../../../fixtures/uploads/${fileName}`, import.meta.url));
 }
 
-test.describe('Importateur Demande Renouvellement', () => {
-  test('IMP-DEM-REN-001 | Renouvellement with numero certificat initial', async ({ page }) => {
+test.describe('Importateur Demande Initiale', () => {
+  test('IMP-DEM-INIT-002 | Create and submit initiale demande 2 for duplicata branching', async ({ page }) => {
     test.setTimeout(120000);
 
     const credentials = await getRoleCredentials('importateur');
     test.skip(!hasRequiredCredentials(credentials), 'Set E2E_IMPORTATEUR_USERNAME/E2E_IMPORTATEUR_PASSWORD or fallback E2E_USERNAME/E2E_PASSWORD.');
     test.skip(!hasRequiredEnvironment(), 'Set LOGIN_URL and HOME_URL in .env or CI secrets.');
 
-    const fixture = await loadRenouvellementInitialFixture();
+    const fixture = await loadInitialeFixture();
 
     const requiredDocuments: RequiredDocuments = {
       mandatFile: resolveDocumentPath(fixture.documents.mandatFile),
@@ -50,7 +50,7 @@ test.describe('Importateur Demande Renouvellement', () => {
     await demandePage.continueFromHome();
     await demandePage.openDemandeApprobationFromSidebar();
     await demandePage.startNewDemande();
-    await demandePage.fillRenouvellementWithInitialCertificate(fixture.modelDescription);
+    await demandePage.fillModelDescription(fixture.modelDescription);
     await demandePage.uploadRequiredDocuments(requiredDocuments);
     await demandePage.logPotentialEmptyVisibleFields();
     await demandePage.submit();

@@ -1,6 +1,21 @@
 {
   "nature": "renouvellement",
   "variant": "certificat-initial",
-  "status": "planned",
-  "notes": "Use N° de certificat initial"
+  "modelDescription": {
+    "otherDesignation": "Chronotachygraphe renouvellement initial",
+    "fabricant": "Fabricant Renouvellement A",
+    "marque": "Marque Renouvellement A",
+    "modele": "Modele Renouvellement A",
+    "usageDescription": "Renouvellement avec certificat initial selectionne",
+    "certificateRowName": "MA.2.801.26 13/07/2026 23:50"
+  },
+  "documents": {
+    "mandatFile": "2.9.pdf",
+    "noteDescriptiveFile": "note_descriptive.docx",
+    "drawingsFile": "2.9.pdf",
+    "userDocsFile": "2.9.pdf",
+    "testReportsFile": "2.9.pdf",
+    "oimlCertificateFile": "2.9.pdf",
+    "approvalRequestFile": "2.9.pdf"
+  }
 }

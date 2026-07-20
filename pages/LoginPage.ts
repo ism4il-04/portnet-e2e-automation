@@ -45,7 +45,12 @@ export class LoginPage extends BasePage {
     await this.waitForVisible(this.usernameInput);
     await this.fill(this.usernameInput, username);
     await this.fill(this.passwordInput, password);
-    await this.click(this.loginButton);
+    await this.loginButton.click({ noWaitAfter: true });
+    await this.page.waitForTimeout(2000);
+
+    if (APP_URLS.home) {
+      await this.page.goto(APP_URLS.home, { waitUntil: 'domcontentloaded' });
+    }
   }
 
   async isLoginSuccessful(timeout = 10000): Promise<boolean> {

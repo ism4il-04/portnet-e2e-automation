@@ -1,11 +1,11 @@
 {
   "nature": "initiale",
   "modelDescription": {
-    "otherDesignation": "Chronotachygraphe de reference",
-    "fabricant": "Fabricant Initiale A",
-    "marque": "Marque Initiale A",
-    "modele": "Modele Initiale A",
-    "usageDescription": "Usage prevu pour validation du workflow initiale"
+    "otherDesignation": "Chronotachygraphe de reference 002",
+    "fabricant": "Fabricant Initiale B",
+    "marque": "Marque Initiale B",
+    "modele": "Modele Initiale 002",
+    "usageDescription": "Usage prevu pour identification de la deuxieme demande initiale"
   },
   "documents": {
     "mandatFile": "2.9.pdf",
